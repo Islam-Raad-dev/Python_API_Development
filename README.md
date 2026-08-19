@@ -2,7 +2,7 @@
          
 Welcome to my repository for **Python API Development**. This is the **18th course** in my programming journey. This phase shifts the focus entirely to building production-ready, full-fledged RESTful APIs using **Python** and the **FastAPI** framework, transitioning from database interactions to complete backend deployment and automated CI/CD pipelines.
     
-## 🌐 Overview
+## 🌐 Overview   
 This repository documents my    implementation of the 19-hour comprehensive backend engineering course by Sanjeev Thiyagarajan on freeCodeCamp. It goes beyond bare-minimum API tutorials to cover real-world backend architecture: relational database persistence, Object-Relational Mapping (ORM), robust JWT authentication, automated integration testing, containerization, and continuous integration/continuous deployment (CI/CD).
 
 ## ⚙️ The Methodology
