@@ -1,5 +1,5 @@
 # Python API Development – freeCodeCamp
-
+     
 Welcome to my repository for **Python API Development**. This is the **18th course** in my programming journey. This phase shifts the focus entirely to building production-ready, full-fledged RESTful APIs using **Python** and the **FastAPI** framework, transitioning from database interactions to complete backend deployment and automated CI/CD pipelines.
     
 ## 🌐 Overview
