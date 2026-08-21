@@ -4,4 +4,4 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message" : " Islam Raad Api "}
+    return {"message" : " Islam Raad Api "}             
