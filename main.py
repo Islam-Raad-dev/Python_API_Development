@@ -14,6 +14,14 @@ class Post(BaseModel):
     published: bool = True
     rating: Optional[float] = None  # noqa: UP045
 
+
+my_post = [
+    {"title": "Nigga", "content": "Ass Hole", "id": 1},
+    {"title": "White", "content": "Great Man", "id": 2},
+    {"title": "Asian", "content": "Gay Man", "id": 3}
+]
+
+
 @app.get("/")
 async def root():           
     return {"message" : " Islam Raad API "}   
@@ -21,11 +29,26 @@ async def root():
 
 @app.get("/posts")
 async def get_posts():
-    return {"Data": " This is Your Post API "}
+    print(my_post)
+    return {"Data": my_post}
+
+
+def find_post(id):
+    for p in my_post:
+        if p["id"] == id:
+            return p
+
+
+@app.get("/posts/{id}")
+async def get_post(id: int):
+    post = find_post(id)
+    return {"Data" : post}
+
 
 
 @app.post("/posts")
 async def create_posts(post: Post):
-    print(post.published)
+    my_post.append(post.dict())
+    print(my_post)
     return {"Data" : post}
 
