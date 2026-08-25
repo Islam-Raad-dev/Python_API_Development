@@ -6,6 +6,10 @@ from pydantic import BaseModel  # noqa: F401
 
 app = FastAPI()
 
+class Post(BaseModel):
+    title: str
+    content: str
+
 @app.get("/")
 async def root():           
     return {"message" : " Islam Raad API "}   
@@ -17,7 +21,7 @@ async def get_posts():
 
 
 @app.post("/createpost")
-async def create_posts(payload: dict = Body):
-    print(payload)
-    return {"new_post" : f"title {payload['title']} content: {payload['content']}"}
+async def create_posts(nwe_post: Post):
+    print(nwe_post.title)
+    return {"Data" : "New Post"}
 
