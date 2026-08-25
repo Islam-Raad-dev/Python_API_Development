@@ -1,4 +1,4 @@
-# 1:09:30
+# 1:52:00
 
 from typing import Optional
 
@@ -18,7 +18,7 @@ class Post(BaseModel):
 my_post = [
     {"title": "Nigga", "content": "Ass Hole", "id": 1},
     {"title": "White", "content": "Great Man", "id": 2},
-    {"title": "Asian", "content": "Gay Man", "id": 3}
+    {"title": "Arab", "content": "Gay Man", "id": 3}
 ]
 
 
@@ -37,6 +37,12 @@ def find_post(id):
     for p in my_post:
         if p["id"] == id:
             return p
+
+
+@app.get("/posts/latest")
+async def get_latest_post():
+    return {"Data" : my_post[len(my_post) - 1]}
+
 
 
 @app.get("/posts/{id}")
