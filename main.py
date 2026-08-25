@@ -1,5 +1,8 @@
+# 1:09:30
+
 from fastapi import FastAPI
 from fastapi.params import Body
+from pydantic import BaseModel  # noqa: F401
 
 app = FastAPI()
 
@@ -18,4 +21,3 @@ async def create_posts(payload: dict = Body):
     print(payload)
     return {"new_post" : f"title {payload['title']} content: {payload['content']}"}
 
-# 1:09:30
