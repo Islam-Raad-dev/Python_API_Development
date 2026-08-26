@@ -39,10 +39,6 @@ def find_post(id):
             return p
 
 
-@app.get("/posts/latest")
-async def get_latest_post():
-    return {"Data" : my_post[len(my_post) - 1]}
-
 
 
 @app.get("/posts/{id}")
