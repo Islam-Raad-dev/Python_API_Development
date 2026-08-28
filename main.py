@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, Response, status  # noqa: F401
 from fastapi.params import Body  # noqa: F401
 from pydantic import BaseModel
 
@@ -65,7 +65,5 @@ async def get_post(id: int):
 async def delete_post(id: int):
     post = find_index_post(id)
     my_post.pop(post)
-    return {"data" : "successfully delete post"}
-
-
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
