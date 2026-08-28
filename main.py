@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Response, status  # noqa: F401
 from fastapi.params import Body  # noqa: F401
 from pydantic import BaseModel
 
@@ -38,19 +38,22 @@ def find_post(id):
         if p["id"] == id:
             return p
 
-
-
-
-@app.get("/posts/{id}")
-async def get_post(id: int):
-    post = find_post(id)
-    return {"Data" : post}
-
-
-
 @app.post("/posts")
 async def create_posts(post: Post):
     my_post.append(post.dict())
     print(my_post)
+    return {"Data": post}
+
+
+@app.get("/posts/{id}")
+async def get_post(id: int, response: Response):
+    post = find_post(id)
+    if not post:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {'message' : f"post with id: {id} was not found"}
     return {"Data" : post}
+
+
+
+
 
