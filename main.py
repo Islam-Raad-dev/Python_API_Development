@@ -71,3 +71,7 @@ async def delete_post(id: int):
     my_post.pop(index)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
+
+@app.put("/posts/{id}", status_code=status.HTTP_200_OK)
+async def update_post(id : int):
+    pass 
