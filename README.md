@@ -19,7 +19,7 @@ The engineering approach follows a strict, progressive backend maturation cycle:
 * **FastAPI Core:** Path operations, response models, routers, and automatic OpenAPI documentation.
 * **Pydantic Validation:** Strict request/response payload typing, schema validation, and ORM mode serialization.
 * **Database Management:** Native PostgreSQL integration using `psycopg2` raw SQL and `SQLAlchemy` ORM.
-* **Complex Data Modeling:** Structuring One-to-Many and Many-to-Many relationships (User-Post ownership, Vote/Like systems) using foreign keys and SQL Joins.
+* **Complex Data Modeling:** Structuring One-to-Many and Many-to-Many relationships (User-Post ownership, Vote/Like systems) using foreign keys and SQL Joins.                  
 
 ### Part 2: Security, Testing & Infrastructure
 * **Authentication & Authorization:** Secure user registration, password hashing, JWT token generation/verification, and route protection via OAuth2 dependencies.
