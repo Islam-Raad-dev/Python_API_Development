@@ -25,9 +25,7 @@ load_dotenv()
 
 app = FastAPI()
 
-
 # -------------------------------------------------------------------------
-
 
 class Post(BaseModel):
     title: str
@@ -59,18 +57,13 @@ while True:
         print(f"The Error Was {error}")
         time.sleep(3)
 
-
-
 # -------------------------------------------------------------------------
-
 
 @app.get("/")
 async def root():           
     return {"message" : " Islam Raad API "}   
 
-
 # -------------------------------------------------------------------------
-
 
 @app.get("/posts")
 async def get_posts():
@@ -83,10 +76,7 @@ async def get_posts():
 async def test_post(db: Session = Depends(get_db)):  # noqa: B008
     return {"Status" : "Success"}
 
-
-
 # -------------------------------------------------------------------------
-
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 async def create_posts(post: Post):
@@ -99,7 +89,6 @@ async def create_posts(post: Post):
     return {"data": new_post}
 
 #-------------------------------------------------------------------------
-
 
 @app.get("/posts/{id}")
 async def get_post(id: int):
@@ -119,7 +108,6 @@ async def get_post(id: int):
 
 # -------------------------------------------------------------------------
 
-
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_post(id: int):
 
@@ -137,7 +125,6 @@ async def delete_post(id: int):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 # -------------------------------------------------------------------------
-
 
 @app.put("/posts/{id}", status_code=status.HTTP_200_OK)
 async def update_post(id: int, post: Post):
