@@ -25,7 +25,6 @@ class Post(BaseModel):
 while True:
     try:
 
-
         connect = psycopg2.connect(
             host=os.getenv("DB_HOST"),
             database=os.getenv("DB_NAME"),
@@ -38,6 +37,8 @@ while True:
         cursor = connect.cursor()
         print("Connect to Database was successful")
         break
+
+
     except Exception as error:  # noqa: BLE001
         print("Connect to Database was Failed")
         print(f"The Error Was {error}")
@@ -51,6 +52,7 @@ while True:
 @app.get("/")
 async def root():           
     return {"message" : " Islam Raad API "}   
+
 
 # -------------------------------------------------------------------------
 
@@ -68,8 +70,10 @@ async def get_posts():
 async def create_posts(post: Post):
 
     cursor.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (post.title, post.content, post.published))
+
     new_post = cursor.fetchone()
     connect.commit()
+
     return {"data": new_post}
 
 #-------------------------------------------------------------------------
@@ -77,13 +81,18 @@ async def create_posts(post: Post):
 
 @app.get("/posts/{id}")
 async def get_post(id: int):
+
     cursor.execute("""SELECT * FROM posts WHERE id = %s """, (id,))
+
     post = cursor.fetchone()
+
     if not post:
+
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post with id: {id} was not found",
         )
+    
     return {"data" : post}
 
 # -------------------------------------------------------------------------
@@ -98,6 +107,7 @@ async def delete_post(id: int):
     connect.commit()
 
     if deleted_post is None:
+        
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                              detail=f"post at id {id} is not found")
 
