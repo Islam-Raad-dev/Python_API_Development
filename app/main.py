@@ -1,15 +1,15 @@
 # 3:55:00
 
-import time  # noqa: F401
 import os
+import time
 from typing import Optional
 
 import psycopg2
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Response, status
 from fastapi.params import Body  # noqa: F401
-from psycopg2.extras import RealDictCursor  # noqa: F402
+from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
-from dotenv import load_dotenv
 
 app = FastAPI()
 
@@ -41,16 +41,22 @@ while True:
         print(f"The Error Was {error}")
         time.sleep(3)
 
+# -------------------------------------------------------------------------
+
 my_post = [
     {"title": "Nigga", "content": "Ass Hole", "id": 1},
     {"title": "White", "content": "Great Man", "id": 2},
     {"title": "Arab", "content": "Gay Man", "id": 3}
 ]
 
+# -------------------------------------------------------------------------
+
 
 @app.get("/")
 async def root():           
     return {"message" : " Islam Raad API "}   
+
+# -------------------------------------------------------------------------
 
 
 @app.get("/posts")
@@ -59,15 +65,21 @@ async def get_posts():
     posts = cursor.fetchall()
     return {"data": posts}
 
+# -------------------------------------------------------------------------
+
 
 def find_post(id):
     for p in my_post:
         if p["id"] == id:
             return p
+# -------------------------------------------------------------------------
+
+
 def find_index_post(id):
     for i, p in enumerate(my_post):
         if p["id"] == id:
             return i
+# -------------------------------------------------------------------------
 
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
@@ -77,6 +89,8 @@ async def create_posts(post: Post):
 
 
     return {"data": post}
+
+#-------------------------------------------------------------------------
 
 
 @app.get("/posts/{id}")
@@ -89,6 +103,8 @@ async def get_post(id: int):
         )
     return {"data" : post}
 
+# -------------------------------------------------------------------------
+
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_post(id: int):
@@ -99,6 +115,8 @@ async def delete_post(id: int):
     
     my_post.pop(index)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+# -------------------------------------------------------------------------
 
 
 @app.put("/posts/{id}", status_code=status.HTTP_200_OK)
