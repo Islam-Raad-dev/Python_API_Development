@@ -1,4 +1,4 @@
-# 4:55:00
+# 4:41:00
 
 import os
 import time
@@ -107,7 +107,7 @@ async def delete_post(id: int):
     connect.commit()
 
     if deleted_post is None:
-        
+
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                              detail=f"post at id {id} is not found")
 
