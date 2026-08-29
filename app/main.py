@@ -11,9 +11,22 @@ from fastapi.params import Body  # noqa: F401
 from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
 
+from . import models  # noqa: F401
+from .database import SessionLocal, engine
+
+models.Base.metadata.create_all(bind=engine)
+
+
 load_dotenv()
 
 app = FastAPI()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 class Post(BaseModel):
     title: str
