@@ -5,13 +5,14 @@ import time
 from typing import Optional
 
 import psycopg2
+from sqlalchemy.orm import Session
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Response, status
+from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.params import Body  # noqa: F401
 from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
 
-from . import models  # noqa: F401
+from . import models
 from .database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
@@ -24,14 +25,6 @@ load_dotenv()
 
 app = FastAPI()
 
-# -------------------------------------------------------------------------
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # -------------------------------------------------------------------------
 
@@ -83,6 +76,13 @@ async def root():
 async def get_posts():
     cursor.execute("""SELECT * FROM posts""")
     return {"data": cursor.fetchall()}
+
+# -------------------------------------------------------------------------
+
+@app.get("/sql")
+async def test_post(db: Session = Depends(get_db)):  # noqa: B008
+    return {"Status" : "Success"}
+
 
 
 # -------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Date, ForeignKey, Integer, String, column  # noqa: F401
+from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String  # noqa: F401
 from sqlalchemy.orm import relationship  # noqa: F401
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
@@ -7,11 +7,11 @@ from .database import Base
 
 
 class Post(Base):
-    __tablename__ = "post"
+    __tablename__ = "posts"
 
-    id = column(Integer, primary_key= True, nullable=False)
-    title = column(String, nullable=False)
-    content = column(String, nullable=False)
-    published = column(Boolean, default=True)
-    created_at = column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+    id = Column(Integer, primary_key=True, nullable=False)
+    title = Column(String, nullable=False)
+    content = Column(String, nullable=False)
+    published = Column(Boolean, default=True)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
