@@ -1,10 +1,15 @@
 # 3:55:00
 
+import time  # noqa: F401
+import os
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, Response, status  # noqa: F401
+import psycopg2
+from fastapi import FastAPI, HTTPException, Response, status
 from fastapi.params import Body  # noqa: F401
+from psycopg2.extras import RealDictCursor  # noqa: F402
 from pydantic import BaseModel
+from dotenv import load_dotenv
 
 app = FastAPI()
 
@@ -14,6 +19,27 @@ class Post(BaseModel):
     published: bool = True
     rating: Optional[float] = None  # noqa: UP045
 
+
+while True:
+    try:
+        load_dotenv()
+
+        connect = psycopg2.connect(
+            host=os.getenv("DB_HOST"),
+            database=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            port=os.getenv("DB_PORT"),
+            cursor_factory=RealDictCursor
+            )
+
+        cursor = connect.cursor()
+        print("Connect to Database was successful")
+        break
+    except Exception as error:  # noqa: BLE001
+        print("Connect to Database was Failed")
+        print(f"The Error Was {error}")
+        time.sleep(3)
 
 my_post = [
     {"title": "Nigga", "content": "Ass Hole", "id": 1},
@@ -29,8 +55,9 @@ async def root():
 
 @app.get("/posts")
 async def get_posts():
-    print(my_post)
-    return {"data": my_post}
+    cursor.execute("""SELECT * FROM posts""")
+    posts = cursor.fetchall()
+    return {"data": posts}
 
 
 def find_post(id):
@@ -45,8 +72,10 @@ def find_index_post(id):
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 async def create_posts(post: Post):
-   
-    my_post.append(post.dict())
+
+    cursor.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (post.title, post.content, post.published))
+
+
     return {"data": post}
 
 
