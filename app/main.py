@@ -86,9 +86,9 @@ def find_index_post(id):
 async def create_posts(post: Post):
 
     cursor.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (post.title, post.content, post.published))
-
-
-    return {"data": post}
+    new_post = cursor.fetchone()
+    connect.commit()
+    return {"data": new_post}
 
 #-------------------------------------------------------------------------
 
