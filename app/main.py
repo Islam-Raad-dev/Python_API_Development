@@ -16,10 +16,15 @@ from .database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
+# -------------------------------------------------------------------------
 
 load_dotenv()
 
+# -------------------------------------------------------------------------
+
 app = FastAPI()
+
+# -------------------------------------------------------------------------
 
 def get_db():
     db = SessionLocal()
@@ -28,12 +33,16 @@ def get_db():
     finally:
         db.close()
 
+# -------------------------------------------------------------------------
+
+
 class Post(BaseModel):
     title: str
     content: str
     published: bool = True
     rating: Optional[float] = None  # noqa: UP045
 
+# -------------------------------------------------------------------------
 
 while True:
     try:
