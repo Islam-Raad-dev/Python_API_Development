@@ -52,7 +52,9 @@ async def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
 
 #-------------------------------------------------------------------------
 
-@app.get("/posts/{id}")
+@app.get("/posts/{id}",
+          response_model=schemas.Post)
+
 async def get_post(id: int, db: Session = Depends(get_db)):  # noqa: B008
 
     post = db.query(models.Post).filter(models.Post.id == id).first()
@@ -68,7 +70,9 @@ async def get_post(id: int, db: Session = Depends(get_db)):  # noqa: B008
 
 # -------------------------------------------------------------------------
 
-@app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@app.delete("/posts/{id}",
+             status_code=status.HTTP_204_NO_CONTENT)
+
 async def delete_post(id: int, db: Session = Depends(get_db)):  # noqa: B008
 
     deleted_post = db.query(models.Post).filter(models.Post.id == id)
@@ -86,7 +90,10 @@ async def delete_post(id: int, db: Session = Depends(get_db)):  # noqa: B008
 
 # -------------------------------------------------------------------------
 
-@app.put("/posts/{id}", status_code=status.HTTP_200_OK)
+@app.put("/posts/{id}",
+          status_code=status.HTTP_200_OK,
+          response_model=schemas.Post)
+
 async def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(get_db)):  # noqa: B008
 
 
