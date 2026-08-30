@@ -121,6 +121,7 @@ async def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(g
 
 @app.post("/users",
             status_code=status.HTTP_201_CREATED,
-            response_model=schemas.User)
-async def create_user():
+            response_model=schemas.UserCreate)
+
+async def create_user(post: schemas.UserCreate, db: Session = Depends(get_db)):  # noqa: B008
     pass

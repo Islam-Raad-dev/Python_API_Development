@@ -20,7 +20,7 @@ class Post(PostBase):
 class Config:
     orm_mode = True
 
-class User(BaseModel):
+class UserCreate(BaseModel):
     id : int
     first_name : str
     last_name: str
