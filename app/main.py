@@ -3,8 +3,6 @@
 
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Response, status
-from fastapi.params import Body  # noqa: F401
-from psycopg2.extras import RealDictCursor  # noqa: F401
 from sqlalchemy.orm import Session
 
 from . import models
