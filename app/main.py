@@ -1,14 +1,10 @@
 # 5:04:00
 
-import os
-import time
-from typing import Optional
 
-import psycopg2
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.params import Body  # noqa: F401
-from psycopg2.extras import RealDictCursor
+from psycopg2.extras import RealDictCursor  # noqa: F401
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
