@@ -66,36 +66,29 @@ async def root():
 # -------------------------------------------------------------------------
 
 @app.get("/posts")
-async def get_posts():
-    cursor.execute("""SELECT * FROM posts""")
-    return {"data": cursor.fetchall()}
-
-# -------------------------------------------------------------------------
-
-@app.get("/sql")
-async def test_post(db: Session = Depends(get_db)):  # noqa: B008
-
-    posts = db.query(models.Post).all()
-    return {"Data" : posts}
+async def get_posts(db: Session = Depends(get_db)):  # noqa: B008
+    post = db.query(models.Post).all()
+    return {"data": post}
 
 # -------------------------------------------------------------------------
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 async def create_posts(post: Post, db: Session = Depends(get_db)):  # noqa: B008
 
-    cursor.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (post.title, post.content, post.published))
+    new_post = models.Post(
+        title=post.title, content=post.content, published=post.published
+    )
 
-    db.query(models.Post).
-
-    new_post = cursor.fetchone()
-    connect.commit()
+    db.add(new_post)
+    db.commit()
+    db.refresh(new_post)
 
     return {"data": new_post}
 
 #-------------------------------------------------------------------------
 
 @app.get("/posts/{id}")
-async def get_post(id: int):
+async def get_post(id: int, db: Session = Depends(get_db)):  # noqa: B008
 
     cursor.execute("""SELECT * FROM posts WHERE id = %s """, (id,))
 
