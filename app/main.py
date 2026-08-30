@@ -31,7 +31,6 @@ class Post(BaseModel):
     title: str
     content: str
     published: bool = True
-    rating: Optional[float] = None  # noqa: UP045
 
 # -------------------------------------------------------------------------
 
@@ -75,9 +74,7 @@ async def get_posts(db: Session = Depends(get_db)):  # noqa: B008
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 async def create_posts(post: Post, db: Session = Depends(get_db)):  # noqa: B008
 
-    new_post = models.Post(
-        title=post.title, content=post.content, published=post.published
-    )
+    new_post = models.Post(**post.dict())
 
     db.add(new_post)
     db.commit()
@@ -90,9 +87,7 @@ async def create_posts(post: Post, db: Session = Depends(get_db)):  # noqa: B008
 @app.get("/posts/{id}")
 async def get_post(id: int, db: Session = Depends(get_db)):  # noqa: B008
 
-    cursor.execute("""SELECT * FROM posts WHERE id = %s """, (id,))
-
-    post = cursor.fetchone()
+    post = db.query(models.Post).filter(models.Post.id == id).first()
 
     if not post:
 
@@ -106,38 +101,39 @@ async def get_post(id: int, db: Session = Depends(get_db)):  # noqa: B008
 # -------------------------------------------------------------------------
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_post(id: int):
+async def delete_post(id: int, db: Session = Depends(get_db)):  # noqa: B008
 
-    cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING * """, (id,))
-    
-    deleted_post = cursor.fetchone()
-    connect.commit()
+    deleted_post = db.query(models.Post).filter(models.Post.id == id)
 
-    if deleted_post is None:
+    if deleted_post.first() is None:
 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                              detail=f"post at id {id} is not found")
+    
+    deleted_post.delete(synchronize_session=False)
 
+    db.commit()
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 # -------------------------------------------------------------------------
 
 @app.put("/posts/{id}", status_code=status.HTTP_200_OK)
-async def update_post(id: int, post: Post):
+async def update_post(id: int, post: Post, db: Session = Depends(get_db)):  # noqa: B008
 
-    cursor.execute(
-                    """UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *;""",
-                    (post.title, post.content, post.published, id))
 
-    updated_post = cursor.fetchone()
-    connect.commit()
+    post_query = db.query(models.Post).filter(models.Post.id == id)
 
-    if updated_post is None:
+    update_post = post_query.first()
+
+    if update_post is None:
 
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post with id {id} was not found",
         )
+    post_query.update(post.dict() ,synchronize_session=False)
 
-    return {"data": updated_post}
+    db.commit()
+    
+    return {"data": post_query.first()}
