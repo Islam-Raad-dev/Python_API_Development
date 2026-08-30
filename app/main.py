@@ -34,30 +34,6 @@ class Post(BaseModel):
 
 # -------------------------------------------------------------------------
 
-while True:
-    try:
-
-        connect = psycopg2.connect(
-            host=os.getenv("DB_HOST"),
-            database=os.getenv("DB_NAME"),
-            user=os.getenv("DB_USER"),
-            password=os.getenv("DB_PASSWORD"),
-            port=os.getenv("DB_PORT"),
-            cursor_factory=RealDictCursor
-            )
-
-        cursor = connect.cursor()
-        print("Connect to Database was successful")
-        break
-
-
-    except Exception as error:  # noqa: BLE001
-        print("Connect to Database was Failed")
-        print(f"The Error Was {error}")
-        time.sleep(3)
-
-# -------------------------------------------------------------------------
-
 @app.get("/")
 async def root():           
     return {"message" : " Islam Raad API "}   
@@ -135,5 +111,5 @@ async def update_post(id: int, post: Post, db: Session = Depends(get_db)):  # no
     post_query.update(post.dict() ,synchronize_session=False)
 
     db.commit()
-    
+
     return {"data": post_query.first()}
