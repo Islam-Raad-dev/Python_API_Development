@@ -35,8 +35,12 @@ async def get_posts(db: Session = Depends(get_db)):  # noqa: B008
 
 # -------------------------------------------------------------------------
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
+@app.post("/posts",
+            status_code=status.HTTP_201_CREATED,
+            response_model=schemas.Post)
+
 async def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):  # noqa: B008
+
 
     new_post = models.Post(**post.dict())
 
