@@ -28,7 +28,9 @@ async def root():
 
 # -------------------------------------------------------------------------
 
-@app.get("/posts")
+@app.get("/posts",
+          response_model=list[schemas.Post])
+
 async def get_posts(db: Session = Depends(get_db)):  # noqa: B008
     post = db.query(models.Post).all()
     return post
