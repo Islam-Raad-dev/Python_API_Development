@@ -5,9 +5,8 @@ from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from sqlalchemy.orm import Session
 
-from . import models
+from . import models, schemas
 from .database import engine, get_db
-from .schemas import Post
 
 # -------------------------------------------------------------------------
 
@@ -32,12 +31,12 @@ async def root():
 @app.get("/posts")
 async def get_posts(db: Session = Depends(get_db)):  # noqa: B008
     post = db.query(models.Post).all()
-    return {"data": post}
+    return post
 
 # -------------------------------------------------------------------------
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
-async def create_posts(post: Post, db: Session = Depends(get_db)):  # noqa: B008
+async def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):  # noqa: B008
 
     new_post = models.Post(**post.dict())
 
@@ -45,7 +44,7 @@ async def create_posts(post: Post, db: Session = Depends(get_db)):  # noqa: B008
     db.commit()
     db.refresh(new_post)
 
-    return {"data": new_post}
+    return new_post
 
 #-------------------------------------------------------------------------
 
@@ -61,7 +60,7 @@ async def get_post(id: int, db: Session = Depends(get_db)):  # noqa: B008
             detail=f"post with id: {id} was not found",
         )
     
-    return {"data" : post}
+    return post
 
 # -------------------------------------------------------------------------
 
@@ -84,7 +83,7 @@ async def delete_post(id: int, db: Session = Depends(get_db)):  # noqa: B008
 # -------------------------------------------------------------------------
 
 @app.put("/posts/{id}", status_code=status.HTTP_200_OK)
-async def update_post(id: int, post: Post, db: Session = Depends(get_db)):  # noqa: B008
+async def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(get_db)):  # noqa: B008
 
 
     post_query = db.query(models.Post).filter(models.Post.id == id)
@@ -101,4 +100,4 @@ async def update_post(id: int, post: Post, db: Session = Depends(get_db)):  # no
 
     db.commit()
 
-    return {"data": post_query.first()}
+    return post_query.first()
