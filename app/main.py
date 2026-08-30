@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.params import Body  # noqa: F401
 from psycopg2.extras import RealDictCursor  # noqa: F401
-from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from . import models
 from .database import engine, get_db
+from .schemas import Post
 
 # -------------------------------------------------------------------------
 
@@ -22,13 +22,6 @@ load_dotenv()
 # -------------------------------------------------------------------------
 
 app = FastAPI()
-
-# -------------------------------------------------------------------------
-
-class Post(BaseModel):
-    title: str
-    content: str
-    published: bool = True
 
 # -------------------------------------------------------------------------
 
