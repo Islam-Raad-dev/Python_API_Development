@@ -19,3 +19,11 @@ class Post(PostBase):
 
 class Config:
     orm_mode = True
+
+class User(BaseModel):
+    id : int
+    first_name : str
+    last_name: str
+    email: str
+    password: str
+    created_at : datetime

@@ -114,3 +114,13 @@ async def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(g
     db.commit()
 
     return post_query.first()
+
+# -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+
+@app.post("/users",
+            status_code=status.HTTP_201_CREATED,
+            response_model=schemas.User)
+async def create_user():
+    pass
