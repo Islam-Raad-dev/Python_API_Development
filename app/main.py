@@ -125,7 +125,7 @@ async def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(g
 
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):  # noqa: B008
 
-    hashed_password = utils.Hash(user.password)
+    hashed_password = utils.SecurityManager.hash_password(user.password)
     user.password = hashed_password
     
     new_user = models.User(**user.dict())
