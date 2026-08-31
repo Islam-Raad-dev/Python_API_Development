@@ -1,4 +1,4 @@
-# 6:04:00
+# 6:33:00
 
 
 from fastapi import FastAPI
@@ -17,8 +17,8 @@ app = FastAPI()
 
 # -------------------------------------------------------------------------
 
-app.include_router(post.router)
 app.include_router(user.router)
+app.include_router(post.router)
 
 # -------------------------------------------------------------------------
 
