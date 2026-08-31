@@ -43,8 +43,8 @@ async def get_posts(db: Session = Depends(get_db)):  # noqa: B008
 
 async def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):  # noqa: B008
 
-
-    new_post = models.Post(**post.dict())
+    post_data = post.model_dump()
+    new_post = models.Post(**post_data)
 
     db.add(new_post)
     db.commit()
