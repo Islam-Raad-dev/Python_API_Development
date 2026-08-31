@@ -125,6 +125,7 @@ async def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(g
 
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):  # noqa: B008
 
+
     new_user = models.User(**user.dict())
 
     db.add(new_user)
