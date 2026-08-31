@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from sqlalchemy.orm import Session
 
-from . import models, schemas
+from . import models, schemas, utils
 from .database import engine, get_db
 
 # -------------------------------------------------------------------------
@@ -125,7 +125,9 @@ async def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(g
 
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):  # noqa: B008
 
-
+    hashed_password = utils.Hash(user.password)
+    user.password = hashed_password
+    
     new_user = models.User(**user.dict())
 
     db.add(new_user)
