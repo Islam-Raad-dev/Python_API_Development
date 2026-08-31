@@ -125,10 +125,10 @@ async def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(g
 
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):  # noqa: B008
 
-    hashed_password = utils.hash_password(user.password)
-    user.password = hashed_password
+    user_data = user.model_dump()
+    user_data["password"] = utils.hash_password(user.password)
     
-    new_user = models.User(**user.dict())
+    new_user = models.User(**user_data)
 
     db.add(new_user)
     db.commit()

@@ -1,7 +1,13 @@
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatchError
 
-ph = PasswordHasher()
+ph = PasswordHasher(
+    time_cost=3,
+    memory_cost=65536,  # 64MB RAM
+    parallelism=4,
+    hash_len=32,
+    salt_len=16,
+)
 
 def hash_password(password: str) -> str:
         if not password or len(password) < 8:
