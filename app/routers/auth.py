@@ -29,7 +29,7 @@ async def login_user(user_credentials: schemas.UserLogin, db: Session = Depends(
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"user with email: {user_credentials.email} was not found",
+            detail="Invalid Credentials",
         )
 
     return user
