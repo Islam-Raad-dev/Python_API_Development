@@ -20,7 +20,7 @@ router = APIRouter(tags=["Authentication"])
 # -------------------------------------------------------------------------
 
 
-@router.post("/login", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
+@router.post("/login", status_code=status.HTTP_200_OK)
 
 async def login_user(user_credentials: schemas.UserLogin, db: Session = Depends(database.get_db)):  # noqa: B008
 
