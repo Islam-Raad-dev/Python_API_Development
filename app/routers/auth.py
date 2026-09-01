@@ -1,14 +1,13 @@
-from fastapi import (  # noqa: F401
+from fastapi import (
     APIRouter,
     Depends,
     HTTPException,
-    Response,
     status,
 )
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from .. import database, models, oauth2, schemas, utils
+from .. import database, models, oauth2, utils
 
 # -------------------------------------------------------------------------
 
