@@ -41,4 +41,4 @@ async def login_user(user_credentials: schemas.UserLogin, db: Session = Depends(
 
     access_token = oauth2.create_access_token(data={"user_id": user.id})
 
-    return {"token" : access_token}
+    return {"access_token" : access_token}
