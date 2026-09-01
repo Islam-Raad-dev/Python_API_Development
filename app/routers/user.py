@@ -7,7 +7,7 @@ from fastapi import (  # noqa: F401
 )
 from sqlalchemy.orm import Session
 
-from .. import models, schemas, utils
+from .. import models, schemas, utils, oauth2
 from ..database import engine, get_db
 
 # -------------------------------------------------------------------------
@@ -22,7 +22,9 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
-async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):  # noqa: B008
+async def create_user(user: schemas.UserCreate,
+                       db: Session = Depends(get_db),  # noqa: B008
+                       get_current_user: int = Depends(oauth2.get_current_user())):
 
     user_data = user.model_dump()
     user_data["password"] = utils.hash_password(user.password)

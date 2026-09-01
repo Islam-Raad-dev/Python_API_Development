@@ -9,12 +9,12 @@ from . import schemas
 
 oauth2_schemas = OAuth2PasswordBearer(tokenUrl="login")
 
-#SECRET_KEY
-#ALGORITHM
-#EXPIRATION TIME
+# -------------------------------------------------------------------------
 
-SECRET_KEY = os.getenv("SECRET_KEY_FRO_JWT", "fallback_secret_key_for_dev_only")
+SECRET_KEY = os.getenv("SECRET_KEY_FRO_JWT","fallback_secret_key_for_dev_only")
+
 ALGORITHM = "HS256"
+
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # -------------------------------------------------------------------------
@@ -42,11 +42,12 @@ def verify_access_token(token: str, credentials_exception):
         if id is None:
             raise credentials_exception
 
-        token_data = schemas.TokenData(id=id)  # noqa: F841
+        token_data = schemas.TokenData(id=id)
 
     except JWTError:
         raise credentials_exception
 
+    return token_data
 # -------------------------------------------------------------------------
 
 def get_current_user(token: str = Depends(oauth2_schemas)):
