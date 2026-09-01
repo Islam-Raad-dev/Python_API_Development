@@ -14,7 +14,6 @@ from ..database import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
 
-
 # -------------------------------------------------------------------------
 
 router = APIRouter(prefix="/users", tags=["Users"])
