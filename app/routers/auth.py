@@ -7,7 +7,7 @@ from fastapi import (  # noqa: F401
 )
 from sqlalchemy.orm import Session
 
-from .. import database, models, schemas, utils
+from .. import database, models, oauth2, schemas, utils
 
 # -------------------------------------------------------------------------
 
@@ -39,5 +39,6 @@ async def login_user(user_credentials: schemas.UserLogin, db: Session = Depends(
             detail="Invalid Credentials"
         )
 
+    access_token = oauth2.create_access_token(data={"user_id": user.id})
 
-    return {"token" : "Example Token"}
+    return {"token" : access_token}
