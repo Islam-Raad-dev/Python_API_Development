@@ -28,7 +28,7 @@ async def get_posts(db: Session = Depends(get_db)):  # noqa: B008
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
 async def create_posts(post: schemas.PostCreate,
                        db: Session = Depends(get_db),  # noqa: B008
-                       user_id: int = Depends(oauth2.get_current_user)
+                       oauth_token: int = Depends(oauth2.get_current_user)
                         ):
 
     post_data = post.model_dump()
@@ -47,7 +47,7 @@ async def create_posts(post: schemas.PostCreate,
 @router.get("/{id}", response_model=schemas.Post)
 async def get_post(id: int,
                    db: Session = Depends(get_db),  # noqa: B008
-                   user_id: int = Depends(oauth2.get_current_user)):
+                   oauth_token: int = Depends(oauth2.get_current_user)):
 
     post = db.query(models.Post).filter(models.Post.id == id).first()
 
@@ -66,7 +66,7 @@ async def get_post(id: int,
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_post(id: int,
                       db: Session = Depends(get_db),  # noqa: B008
-                      user_id: int = Depends(oauth2.get_current_user)):
+                      oauth_token: int = Depends(oauth2.get_current_user)):
 
     deleted_post = db.query(models.Post).filter(models.Post.id == id)
 
@@ -90,7 +90,7 @@ async def delete_post(id: int,
 async def update_post(id: int,
                       post: schemas.PostCreate,
                       db: Session = Depends(get_db),  # noqa: B008
-                      user_id: int = Depends(oauth2.get_current_user)):
+                      oauth_token: int = Depends(oauth2.get_current_user)):
 
     post_query = db.query(models.Post).filter(models.Post.id == id)
 
