@@ -16,7 +16,8 @@ class PostCreate(PostBase):
 class Post(PostBase):
     id: int
     created_at: datetime
-
+    user_id: int
+    
     class Config:
         model_config = ConfigDict(from_attributes=True)
 
