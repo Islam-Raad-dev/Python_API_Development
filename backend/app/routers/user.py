@@ -7,7 +7,7 @@ from fastapi import (  # noqa: F401
 )
 from sqlalchemy.orm import Session
 
-from .. import models, schemas, utils, oauth2
+from .. import models, oauth2, schemas, utils
 from ..database import engine, get_db
 
 # -------------------------------------------------------------------------
