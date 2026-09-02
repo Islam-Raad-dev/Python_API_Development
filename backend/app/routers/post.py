@@ -75,6 +75,7 @@ async def delete_post(id: int,
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post at id {id} is not found",
         )
+    
     if deleted_post.user_id != oauth2.get_current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -112,6 +113,7 @@ async def update_post(id: int,
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform request action"
         )
+    
     post_query.update(post.dict(), synchronize_session=False)
 
     db.commit()
