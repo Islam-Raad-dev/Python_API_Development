@@ -75,6 +75,11 @@ async def delete_post(id: int,
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post at id {id} is not found",
         )
+    if deleted_post.user_id != oauth2.get_current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to perform request action"
+        )
 
     deleted_post.delete(synchronize_session=False)
 
@@ -94,12 +99,18 @@ async def update_post(id: int,
 
     post_query = db.query(models.Post).filter(models.Post.id == id)
 
-    update_post = post_query.first()
+    updated_post = post_query.first()
 
-    if update_post is None:
+    if updated_post is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post with id {id} was not found",
+        )
+
+    if updated_post.user_id != oauth2.get_current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to perform request action"
         )
     post_query.update(post.dict(), synchronize_session=False)
 
