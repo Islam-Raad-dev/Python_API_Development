@@ -25,6 +25,7 @@ async def get_posts(db: Session = Depends(get_db),  # noqa: B008
     query = db.query(models.Post)
 
     if search:
+        
         query = query.filter(models.Post.title.contains(search))
 
     posts = query.offset(skip).limit(limit).all()
