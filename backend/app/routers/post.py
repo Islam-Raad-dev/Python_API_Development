@@ -17,9 +17,9 @@ router = APIRouter(prefix="/posts", tags=["Posts"])
 
 
 @router.get("/", response_model=list[schemas.Post])
-async def get_posts(db: Session = Depends(get_db)):  # noqa: B008
+async def get_posts(db: Session = Depends(get_db), limit: int = 10):  # noqa: B008
 
-    post = db.query(models.Post).all()
+    post = db.query(models.Post).limit(limit).all()
 
     return post
 
