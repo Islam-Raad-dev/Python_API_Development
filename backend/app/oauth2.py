@@ -15,7 +15,7 @@ SECRET_KEY = os.getenv("SECRET_KEY_FRO_JWT","fallback_secret_key_for_dev_only")
 
 ALGORITHM = "HS256"
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 100
 
 # -------------------------------------------------------------------------
 
