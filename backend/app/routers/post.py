@@ -17,11 +17,19 @@ router = APIRouter(prefix="/posts", tags=["Posts"])
 
 
 @router.get("/", response_model=list[schemas.Post])
-async def get_posts(db: Session = Depends(get_db), limit: int = 10):  # noqa: B008
+async def get_posts(db: Session = Depends(get_db),  # noqa: B008
+                    limit: int = 10,
+                    skip: int = 0,
+                    search: str | None = None):
 
-    post = db.query(models.Post).limit(limit).all()
+    query = db.query(models.Post)
 
-    return post
+    if search:
+        query = query.filter(models.Post.title.contains(search))
+
+    posts = query.offset(skip).limit(limit).all()
+
+    return posts
 
 
 # -------------------------------------------------------------------------
