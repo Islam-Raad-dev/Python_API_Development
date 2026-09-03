@@ -12,11 +12,16 @@ class PostBase(BaseModel):
 class PostCreate(PostBase):
     pass
 
+class UserOut(BaseModel):
+    id: int
+    email: EmailStr
+    created_at: datetime
 
 class Post(PostBase):
     id: int
     created_at: datetime
     user_id: int
+    owner: UserOut
     
     class Config:
         model_config = ConfigDict(from_attributes=True)
@@ -27,10 +32,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=8, max_length=128)
 
-class UserOut(BaseModel):
-    id: int
-    email: EmailStr
-    created_at: datetime
+
 
     class Config:
         model_config = ConfigDict(from_attributes=True)
