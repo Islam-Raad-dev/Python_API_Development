@@ -18,7 +18,9 @@ router = APIRouter(prefix="/posts", tags=["Posts"])
 
 @router.get("/", response_model=list[schemas.Post])
 async def get_posts(db: Session = Depends(get_db)):  # noqa: B008
+
     post = db.query(models.Post).all()
+
     return post
 
 
@@ -92,14 +94,15 @@ async def delete_post(
 # -------------------------------------------------------------------------
 
 
-@router.put("//{id}", status_code=status.HTTP_200_OK, response_model=schemas.Post)
-async def update_post(id: int,
-                      post: schemas.PostCreate,
-                      db: Session = Depends(get_db),  # noqa: B008
-                      current_user: int = Depends(oauth2.get_current_user)):
-
-    post = db.query(models.Post).filter(models.Post.id == id).first()
-
+@router.put("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.Post)
+async def update_post(
+    id: int,
+    updated_post: schemas.PostCreate,
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: models.User = Depends(oauth2.get_current_user),  # noqa: B008
+):
+    post_query = db.query(models.Post).filter(models.Post.id == id)
+    post = post_query.first()
 
     if post is None:
         raise HTTPException(
@@ -110,11 +113,10 @@ async def update_post(id: int,
     if post.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to perform request action"
+            detail="Not authorized to perform request action",
         )
-    
-    update_post.update(post.dict(), synchronize_session=False)
 
+    post_query.update(updated_post.model_dump(), synchronize_session=False)
     db.commit()
 
-    return update_post
+    return post_query.first()
