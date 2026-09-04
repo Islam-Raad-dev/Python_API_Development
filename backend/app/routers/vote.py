@@ -21,6 +21,6 @@ router = APIRouter(prefix="/votes", tags=["Votes"])
 # -------------------------------------------------------------------------
 
 
-@router.post("/", status_code=status.HTTP_200_OK)
-async def like_post():
+@router.post("/", status_code=status.HTTP_201_CREATED)
+async def vote():
     pass
