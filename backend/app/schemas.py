@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, conint
 
 # -------------------------------------------------------------------------
 
@@ -66,4 +66,6 @@ class TokenData(BaseModel):
 # -------------------------------------------------------------------------
 
 class Vote(BaseModel):
-    pass
+    post_id: int
+    user_id: int
+    dir: conint(ge=0, le=1) # type: ignore
