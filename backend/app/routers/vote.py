@@ -1,4 +1,4 @@
-from fastapi import (  # noqa: F401
+from fastapi import (
     APIRouter,
     Depends,
     HTTPException,
@@ -15,7 +15,7 @@ models.Base.metadata.create_all(bind=engine)
 
 # -------------------------------------------------------------------------
 
-router = APIRouter(prefix="/votes", tags=["Votes"])
+router = APIRouter(prefix="/vote", tags=["Vote"])
 
 # -------------------------------------------------------------------------
 
