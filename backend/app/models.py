@@ -5,6 +5,8 @@ from sqlalchemy.sql.sqltypes import TIMESTAMP
 
 from .database import Base
                     
+# -------------------------------------------------------------------------
+
 
 class Post(Base):
     __tablename__ = "posts"
@@ -17,6 +19,9 @@ class Post(Base):
     )
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     owner = relationship("User")
+
+# -------------------------------------------------------------------------
+
 
 class User(Base):
     __tablename__ = "users"
@@ -31,6 +36,9 @@ class User(Base):
         nullable=False,
         server_default=text("CURRENT_TIMESTAMP")
     )
+
+# -------------------------------------------------------------------------
+
 
 class Vote(Base):
     __tablename__ = "votes"
