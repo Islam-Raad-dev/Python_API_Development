@@ -28,7 +28,9 @@ class Post(PostBase):
     id: int
     created_at: datetime
     user_id: int
+    vote: int
     owner: UserOut
+    
     
     class Config:
         model_config = ConfigDict(from_attributes=True)
