@@ -67,5 +67,4 @@ class TokenData(BaseModel):
 
 class Vote(BaseModel):
     post_id: int
-    user_id: int
     dir: conint(ge=0, le=1) # type: ignore
