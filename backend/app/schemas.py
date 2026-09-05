@@ -35,6 +35,12 @@ class Post(PostBase):
     class Config:
         model_config = ConfigDict(from_attributes=True)
 
+class PostOut(BaseModel):
+    Post: Post
+    votes: int
+
+    class Config:
+        from_attributes = True
 # -------------------------------------------------------------------------
 
 class UserCreate(BaseModel):

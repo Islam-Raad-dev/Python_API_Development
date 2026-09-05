@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
-
+from sqlalchemy import func
 from .. import models, oauth2, schemas
 from ..database import engine, get_db
 
@@ -14,23 +14,23 @@ models.Base.metadata.create_all(bind=engine)
 router = APIRouter(prefix="/posts", tags=["Posts"])
 
 # -------------------------------------------------------------------------
-
-
-@router.get("/", response_model=list[schemas.Post])
-async def get_posts(db: Session = Depends(get_db),  # noqa: B008
-                    limit: int = 10,
-                    skip: int = 0,
-                    search: str | None = None):
-
-    query = db.query(models.Post)
+@router.get("/", response_model=list[schemas.PostOut])
+async def get_posts(
+    db: Session = Depends(get_db),  # noqa: B008
+    limit: int = 10,
+    skip: int = 0,
+    search: str | None = None,
+):
+    query = (
+        db.query(models.Post, func.count(models.Vote.post_id).label("votes"))
+        .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True)
+        .group_by(models.Post.id)
+    )
 
     if search:
-        
         query = query.filter(models.Post.title.contains(search))
 
-    posts = query.offset(skip).limit(limit).all()
-
-    return posts
+    return query.offset(skip).limit(limit).all()
 
 
 # -------------------------------------------------------------------------
