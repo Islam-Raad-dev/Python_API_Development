@@ -7,7 +7,8 @@ from sqlalchemy import create_engine, pool
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from app.database import SQL_ALCHEMY_DATABASE_URL, Base
+from app.database import SQL_ALCHEMY_DATABASE_URL
+from app.models import Base
 
 config = context.config
 
@@ -19,24 +20,7 @@ config.set_main_option("sqlalchemy.url", SQL_ALCHEMY_DATABASE_URL)
 target_metadata = Base.metadata
 
 
-def run_migrations_offline() -> None:
-
-    url = config.get_main_option("sqlalchemy.url")
-    context.configure(
-        url=url,
-        target_metadata=target_metadata,
-        literal_binds=True,
-        dialect_opts={"paramstyle": "named"},
-        compare_type=True,
-        compare_server_default=True,
-    )
-
-    with context.begin_transaction():
-        context.run_migrations()
-
-
 def run_migrations_online() -> None:
-    
     connectable = create_engine(
         SQL_ALCHEMY_DATABASE_URL,
         poolclass=pool.NullPool,
@@ -55,6 +39,14 @@ def run_migrations_online() -> None:
 
 
 if context.is_offline_mode():
-    run_migrations_offline()
+    context.configure(
+        url=SQL_ALCHEMY_DATABASE_URL,
+        target_metadata=target_metadata,
+        literal_binds=True,
+        dialect_opts={"paramstyle": "named"},
+        compare_type=True,
+    )
+    with context.begin_transaction():
+        context.run_migrations()
 else:
     run_migrations_online()
