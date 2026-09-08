@@ -5,24 +5,25 @@ Revises: 8435f2e792e8
 Create Date: 2026-09-06 19:25:14.809114
 
 """
-from typing import Sequence, Union
+from collections.abc import Sequence
+from typing import Union
 
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = '8a4e8f650ab2'
-down_revision: Union[str, Sequence[str], None] = '8435f2e792e8'
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: Union[str, Sequence[str], None] = '8435f2e792e8'  # noqa: UP007
+branch_labels: Union[str, Sequence[str], None] = None  # noqa: UP007
+depends_on: Union[str, Sequence[str], None] = None  # noqa: UP007
 
 
 def upgrade() -> None:
     """Upgrade schema."""
-    pass
+    op.create_table('posts', sa.column('id', sa.Integer(), nullable=False, primary_key=True), sa.column('title', sa.String(), nullable=True))
 
 
 def downgrade() -> None:
     """Downgrade schema."""
-    pass
+    op.drop_table('posts')
+
