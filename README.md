@@ -27,11 +27,6 @@ The engineering approach follows a strict, progressive backend maturation cycle:
 * **Automated Testing:** Integration testing with `pytest`, custom database fixtures, parameterized testing, client request assertions, and test isolation.
 * **Containerization & Deployment:** Multi-stage Docker builds, orchestration with Docker Compose, systemd/NGINX/Gunicorn setups on Ubuntu VMs, Heroku deployments, and automated GitHub Actions CI/CD pipelines.
 
-## 📂 Repository Structure
-* **.github/workflows:** CI/CD pipeline definitions for automated testing and deployment.
-* **alembic/:** Database migration scripts and revision versions.
-* **app/:** Core application logic including FastAPI routers, ORM models, Pydantic schemas, database connections, and security dependencies.
-* **tests/:** Comprehensive test suite utilizing `pytest`, custom fixtures (`conftest.py`), and test clients.
 
 ## 🛠️ Technologies Used
 * **Framework:** FastAPI
