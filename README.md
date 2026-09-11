@@ -37,7 +37,7 @@ The engineering approach follows a strict, progressive backend maturation cycle:
 * **Framework:** FastAPI
 * **Language:** Python
 * **Database & ORM:** PostgreSQL, SQLAlchemy, Alembic.
-* **Security:** JWT, OAuth2, Passlib (Bcrypt)
+* **Security:** JWT, OAuth2, Argon2
 * **Testing:** Pytest
 * **DevOps & Infrastructure:** Docker, Docker Compose, NGINX, Gunicorn, GitHub Actions, Heroku, Ubuntu
 
