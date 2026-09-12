@@ -9,7 +9,7 @@ This repository documents my    implementation of the 19-hour comprehensive back
 The engineering approach follows a strict, progressive backend maturation cycle:
 1. **API Schema & Operations:** Designing path operations, request validation with Pydantic, and explicit HTTP status codes.
 2. **Data Layer Evolution:** Transitioning from in-memory arrays to raw SQL queries via PostgreSQL, and finally to programmatic ORM abstractions using SQLAlchemy.
-3. **Security Architecture:** Implementing OAuth2 password flows, password hashing with Passlib/Bcrypt, and stateless JWT access tokens for protected routes.
+3. **Security Architecture:** Implementing OAuth2 password flows, password hashing with Argon2, and stateless JWT access tokens for protected routes.
 4. **Schema Migrations:** Managing database schema versions using Alembic to support production schema changes without data loss.
 5. **Quality Assurance & DevOps:** Writing unit and integration tests with Pytest using isolated test databases, dockerizing services, and automating builds via GitHub Actions.
 
