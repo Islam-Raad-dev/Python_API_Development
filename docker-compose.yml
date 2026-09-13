@@ -1,23 +1,35 @@
+version: '3.8'
+
 services:
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: gunicorn backend.app.main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000
     ports:
       - "8000:8000"
     env_file:
-      - ./.env
+      - .env
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    restart: always
+    security_opt:
+      - no-new-privileges:true
 
   postgres:
-    image: postgres:13
+    image: postgres:16-alpine 
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
 
 volumes:
   postgres_data:
