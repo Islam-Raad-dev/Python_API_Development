@@ -5,17 +5,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: gunicorn backend.app.main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000
+    command: uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app
     env_file:
       - .env
     depends_on:
       postgres:
         condition: service_healthy
-    restart: always
-    security_opt:
-      - no-new-privileges:true
 
   postgres:
     image: postgres:16-alpine 
