@@ -28,7 +28,7 @@ class Post(PostBase):
     id: int
     created_at: datetime
     user_id: int
-    vote: int
+    vote: int = 0
     owner: UserOut
     
     
