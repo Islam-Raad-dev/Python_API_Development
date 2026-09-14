@@ -32,15 +32,13 @@ class Post(PostBase):
     owner: UserOut
     
     
-    class Config:
-        model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
 class PostOut(BaseModel):
     Post: Post
     votes: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 # -------------------------------------------------------------------------
 
 class UserCreate(BaseModel):
@@ -51,8 +49,7 @@ class UserCreate(BaseModel):
 
 
 
-    class Config:
-        model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
 # -------------------------------------------------------------------------
 
