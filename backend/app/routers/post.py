@@ -17,10 +17,10 @@ router = APIRouter(prefix="/posts", tags=["Posts"])
 # -------------------------------------------------------------------------
 @router.get("/", response_model=list[schemas.PostOut])
 async def get_posts(
-    db: Session = Depends(get_db),  # noqa: B008
-    limit: int = 10,
-    skip: int = 0,
-    search: str | None = None,
+                    db: Session = Depends(get_db),  # noqa: B008
+                    limit: int = 10,
+                    skip: int = 0,
+                    search: str | None = None,
 ):
     query = (
         db.query(models.Post, func.count(models.Vote.post_id).label("votes"))
@@ -38,9 +38,10 @@ async def get_posts(
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
-async def create_posts(post: schemas.PostCreate,
-                       db: Session = Depends(get_db),  # noqa: B008
-                       current_user: int = Depends(oauth2.get_current_user)
+async def create_posts(
+                      post: schemas.PostCreate,
+                      db: Session = Depends(get_db),  # noqa: B008
+                      current_user: int = Depends(oauth2.get_current_user)
                         ):
 
     post_data = post.model_dump()
@@ -57,9 +58,10 @@ async def create_posts(post: schemas.PostCreate,
 
 
 @router.get("/{id}", response_model=schemas.Post)
-async def get_post(id: int,
-                   db: Session = Depends(get_db),  # noqa: B008
-                   current_user: int = Depends(oauth2.get_current_user)):
+async def get_post(
+                  id: int,
+                  db: Session = Depends(get_db),  # noqa: B008
+                  current_user: int = Depends(oauth2.get_current_user)):
 
     post = db.query(models.Post).filter(models.Post.id == id).first()
 
@@ -77,9 +79,9 @@ async def get_post(id: int,
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_post(
-    id: int,
-    db: Session = Depends(get_db),  # noqa: B008
-    current_user: models.User = Depends(oauth2.get_current_user),  # noqa: B008
+                    id: int,
+                    db: Session = Depends(get_db),  # noqa: B008
+                    current_user: models.User = Depends(oauth2.get_current_user),  # noqa: B008
 ):
     post = db.query(models.Post).filter(models.Post.id == id).first()
 
@@ -106,10 +108,10 @@ async def delete_post(
 
 @router.put("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.Post)
 async def update_post(
-    id: int,
-    updated_post: schemas.PostCreate,
-    db: Session = Depends(get_db),  # noqa: B008
-    current_user: models.User = Depends(oauth2.get_current_user),  # noqa: B008
+                    id: int,
+                    updated_post: schemas.PostCreate,
+                    db: Session = Depends(get_db),  # noqa: B008
+                    current_user: models.User = Depends(oauth2.get_current_user),  # noqa: B008
 ):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
