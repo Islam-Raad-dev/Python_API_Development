@@ -9,10 +9,12 @@ from jose import jwt
 
 client = TestClient(app)
 
+
 def test_root():
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Welcome to the FastAPI application!"}
+
 
 
 def test_create_user(client):
@@ -23,7 +25,9 @@ def test_create_user(client):
     assert new_user.email == "hello123@gmail.com"
     assert res.status_code == 201
 
+
 SECRET_KEY_FOR_JWT = os.getenv("SECRET_KEY_FOR_JWT")
+
 
 
 def test_login_user(test_user, client):
@@ -38,6 +42,7 @@ def test_login_user(test_user, client):
     assert res.status_code == 200
 
 
+
 @pytest.mark.parametrize("email, password, status_code", [
     ('wrongemail@gmail.com', 'password123', 403),
     ('islam@gmail.com', 'wrongpassword', 403),
@@ -45,6 +50,8 @@ def test_login_user(test_user, client):
     (None, 'password123', 422),
     ('islam@gmail.com', None, 422)
 ])
+
+
 def test_incorrect_login(test_user, client, email, password, status_code):
     res = client.post(
         "/login", data={"username": email, "password": password})
