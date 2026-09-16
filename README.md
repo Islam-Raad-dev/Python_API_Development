@@ -4,7 +4,7 @@ Welcome to my repository for **Python API Development**. This is the **18th cour
                                              
 ## 🌐 Overview   
 This repository documents my    implementation of the 19-hour comprehensive backend engineering course by Sanjeev Thiyagarajan on freeCodeCamp. It goes beyond bare-minimum API tutorials to cover real-world backend architecture: relational database persistence, Object-Relational Mapping (ORM), robust JWT authentication, automated integration testing, containerization, and continuous integration/continuous deployment (CI/CD).
-
+                                                                
 ## ⚙️ The Methodology
 The engineering approach follows a strict, progressive backend maturation cycle:
 1. **API Schema & Operations:** Designing path operations, request validation with Pydantic, and explicit HTTP status codes.
