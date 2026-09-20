@@ -25,7 +25,7 @@ def session():
 @pytest.fixture()
 def client(session):
     def override_get_db():
-
+           
         try:
             yield session
         finally:
