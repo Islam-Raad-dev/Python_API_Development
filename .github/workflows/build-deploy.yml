@@ -1,43 +1,52 @@
-name: CI/CD Pipeline - FastAPI Application
+name: CI Pipeline - FastAPI Tests
 
 on:
   push:
-    branches: [ main ]
-
-permissions:
-  id-token: write 
-  contents: read
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
-  test-with-vault:
+  test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USER || 'IslamRaad' }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD || 'IslamRaadDb103dB' }}
+          POSTGRES_DB: ${{ secrets.DB_NAME || 'fastapi_course' }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Import Dynamic Secrets from Vault
-        uses: hashicorp/vault-action@v3
-        with:
-          url: https://vault.enterprise.internal:8200
-          role: github-actions-ci-role
-          method: jwt
-          secrets: |
-            secret/data/ci/postgres username | DB_USER ;
-            secret/data/ci/postgres password | DB_PASSWORD ;
-            secret/data/ci/app jwt_secret | SECRET_KEY_FOR_JWT ;
-
-      - name: Set up Python
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"    
+          python-version: "3.12"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
 
       - name: Run Integration Tests
         env:
-          DB_HOST: ${{ env.DB_HOST }}
-          DB_PORT: ${{ env.DB_PORT }}
+          DB_HOST: localhost
+          DB_PORT: 5432
           DB_USER: ${{ env.DB_USER }}
           DB_PASSWORD: ${{ env.DB_PASSWORD }}
           DB_NAME: ${{ env.DB_NAME }}
           SECRET_KEY_FOR_JWT: ${{ env.SECRET_KEY_FOR_JWT }}
         run: |
-          pip install -r requirements.txt pytest
           pytest
