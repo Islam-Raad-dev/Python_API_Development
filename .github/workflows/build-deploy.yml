@@ -48,5 +48,5 @@ jobs:
           DB_PASSWORD: ${{ env.DB_PASSWORD }}
           DB_NAME: ${{ env.DB_NAME }}
           SECRET_KEY_FOR_JWT: ${{ env.SECRET_KEY_FOR_JWT }}
-        run: |
+        run: |  
           pytest
