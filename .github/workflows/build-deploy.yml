@@ -1,0 +1,43 @@
+name: CI/CD Pipeline - FastAPI Application
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  id-token: write 
+  contents: read
+
+jobs:
+  test-with-vault:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Import Dynamic Secrets from Vault
+        uses: hashicorp/vault-action@v3
+        with:
+          url: https://vault.enterprise.internal:8200
+          role: github-actions-ci-role
+          method: jwt
+          secrets: |
+            secret/data/ci/postgres username | DB_USER ;
+            secret/data/ci/postgres password | DB_PASSWORD ;
+            secret/data/ci/app jwt_secret | SECRET_KEY_FOR_JWT ;
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"    
+
+      - name: Run Integration Tests
+        env:
+          DB_HOST: ${{ env.DB_HOST }}
+          DB_PORT: ${{ env.DB_PORT }}
+          DB_USER: ${{ env.DB_USER }}
+          DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          DB_NAME: ${{ env.DB_NAME }}
+          SECRET_KEY_FOR_JWT: ${{ env.SECRET_KEY_FOR_JWT }}
+        run: |
+          pip install -r requirements.txt pytest
+          pytest
