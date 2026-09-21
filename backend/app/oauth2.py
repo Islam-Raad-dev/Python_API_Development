@@ -11,7 +11,7 @@ oauth2_schemas = OAuth2PasswordBearer(tokenUrl="login")
 
 # -------------------------------------------------------------------------
 
-SECRET_KEY = os.getenv("SECRET_KEY_FRO_JWT","fallback_secret_key_for_dev_only")
+SECRET_KEY = os.getenv("SECRET_KEY_FOR_JWT","fallback_secret_key_for_dev_only")
 
 ALGORITHM = "HS256"
 
